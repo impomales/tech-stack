@@ -10,7 +10,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={createStore(reducers)}>
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1 }}>
           <Header headerText="Tech Stack" />
           <LibraryList />
         </SafeAreaView>
