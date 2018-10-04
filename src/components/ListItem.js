@@ -11,23 +11,24 @@ const styles = StyleSheet.create({
   }
 });
 
-const ListItem = ({ library, selectLibrary }) => {
-  return (
-    <TouchableWithoutFeedback
-      onPress={onPress => selectLibrary(library.item.id)}
-    >
-      <View>
-        <CardSection>
-          <Text style={styles.titleStyle}>{library.item.title}</Text>
-        </CardSection>
-      </View>
-    </TouchableWithoutFeedback>
-  );
+const ListItem = ({ library, selectLibrary, expanded }) => (
+  <TouchableWithoutFeedback onPress={() => selectLibrary(library.item.id)}>
+    <View>
+      <CardSection>
+        <Text style={styles.titleStyle}>{library.item.title}</Text>
+      </CardSection>
+
+      {expanded && <Text>{library.item.description}</Text>}
+    </View>
+  </TouchableWithoutFeedback>
+);
+
+const mapStateToProps = (state, ownProps) => {
+  const expanded = state.selectedLibraryId === ownProps.library.item.id;
+  return { expanded };
 };
 
-
-
 export default connect(
-  null,
+  mapStateToProps,
   actions
 )(ListItem);
