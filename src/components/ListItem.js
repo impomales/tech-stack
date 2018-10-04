@@ -1,5 +1,11 @@
-import React from 'react';
-import { Text, StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
+import React, { Component } from 'react';
+import {
+  Text,
+  StyleSheet,
+  View,
+  TouchableWithoutFeedback,
+  LayoutAnimation
+} from 'react-native';
 import { connect } from 'react-redux';
 import { CardSection } from './common';
 import * as actions from '../actions';
@@ -11,17 +17,29 @@ const styles = StyleSheet.create({
   }
 });
 
-const ListItem = ({ library, selectLibrary, expanded }) => (
-  <TouchableWithoutFeedback onPress={() => selectLibrary(library.item.id)}>
-    <View>
-      <CardSection>
-        <Text style={styles.titleStyle}>{library.item.title}</Text>
-      </CardSection>
+class ListItem extends Component {
+  componentDidUpdate() {
+    LayoutAnimation.spring();
+  }
 
-      {expanded && <Text>{library.item.description}</Text>}
-    </View>
-  </TouchableWithoutFeedback>
-);
+  render() {
+    const { library, selectLibrary, expanded } = this.props;
+    return (
+      <TouchableWithoutFeedback onPress={() => selectLibrary(library.item.id)}>
+        <View>
+          <CardSection>
+            <Text style={styles.titleStyle}>{library.item.title}</Text>
+          </CardSection>
+          <CardSection>
+            {expanded && (
+              <Text style={{ flex: 1 }}>{library.item.description}</Text>
+            )}
+          </CardSection>
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  }
+}
 
 const mapStateToProps = (state, ownProps) => {
   const expanded = state.selectedLibraryId === ownProps.library.item.id;
